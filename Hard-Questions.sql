@@ -1,8 +1,11 @@
 
 /* Airbnb - Given a table of rental property searches by users, 
-            find the minimum, average, maximum rental prices for each host’s popularity rating*/
+            find the minimum, average, maximum rental prices for each host’s popularity rating */
 
 WITH rating_agg AS(
+            
+    /* Third table: Obtaining price aggregates per popularity rating and
+                    adding a column as basis of correct order of ratings in the output */
     SELECT
         host_pop_rating,
         min(price) min_price,
@@ -17,6 +20,7 @@ WITH rating_agg AS(
         END AS rating_order
     FROM
         (
+            /* Second table: Giving popularity rating to hosts based on number of reviews  */
             SELECT
                 hosts_id,
                 price,
@@ -30,6 +34,7 @@ WITH rating_agg AS(
                 END AS host_pop_rating
             FROM
                 (
+                    /* First table: Making the distinct list of hosts with their updated price and reviews */
                     SELECT
                         concat(price, room_type, host_since, zipcode, number_of_reviews) hosts_id,
                         max(price) price,
@@ -44,6 +49,7 @@ WITH rating_agg AS(
         host_pop_rating
 )
 
+/* Final output: Price aggregates by popularity rating  */
 SELECT
     host_pop_rating,
     min_price,
