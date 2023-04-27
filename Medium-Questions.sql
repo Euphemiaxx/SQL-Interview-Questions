@@ -1,4 +1,20 @@
-/* FORBES - Find the top 3 most profitable Companies */ 
+/* Walmart , Best Buy, Dropbox -  Find the employees that earn more than their manager */ 
+SELECT 
+    first_name employee_name,
+    salary employee_salary
+FROM
+    employee a
+WHERE
+    salary > (
+        SELECT
+            salary
+        FROM
+            employee b
+        WHERE
+            a.manager_id = b.id);
+            
+            
+/* Forbes - Find the 3 most profitable companies */ 
 SELECT
     TOP 3 company,
     profits profit
@@ -6,8 +22,8 @@ FROM
     forbes_global_2010_2014
 ORDER BY
     profits DESC;
-
-
+    
+    
 /* Amazon , DoorDash -  Find the job titles of the highest-paid employees */ 
 SELECT
     worker_title best_paid_title
@@ -38,3 +54,32 @@ GROUP BY
     cust_id
 ORDER BY
     revenue DESC;
+
+
+/* ESPN -  Find the Olympics with the highest number of athletes  */ 
+SELECT
+    top 1 games,
+    count(DISTINCT(name)) athletes_count
+FROM
+    olympics_athletes_events
+GROUP BY
+    games
+ORDER BY
+    athletes_count DESC ;
+    
+/* Spotify -  Find the top ranked songs and frequency of being top ranked  */    
+SELECT 
+    trackname,
+    count(trackname) times_top1
+FROM 
+    spotify_worldwide_daily_song_ranking
+WHERE
+    POSITION = 1
+GROUP BY
+    trackname
+ORDER BY
+    times_top1 DESC,
+    trackname
+    
+ 
+    
