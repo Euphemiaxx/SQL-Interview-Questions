@@ -14,6 +14,37 @@ WHERE
             a.manager_id = b.id);
             
             
+/* Salesforce -  Find the employees who achieved highest target under a specific manager */            
+DECLARE @specific_manager AS int = 13
+
+SELECT
+    first_name,
+    target
+FROM
+    salesforce_employees
+WHERE
+    manager_id = @specific_manager
+    AND target = (
+        SELECT
+            max(target)
+        FROM
+            salesforce_employees
+        WHERE
+            manager_id = @specific_manager);
+            
+            
+/* Yelp -  Find the top businesses with most reviews */ 
+SELECT 
+    top 5 name,
+    max(review_count) reviews
+FROM 
+    yelp_business
+GROUP BY 
+    name
+ORDER BY 
+    reviews DESC;
+ 
+ 
 /* Forbes - Find the 3 most profitable companies */ 
 SELECT
     TOP 3 company,
@@ -79,7 +110,7 @@ GROUP BY
     trackname
 ORDER BY
     times_top1 DESC,
-    trackname
+    trackname;
     
  
     
