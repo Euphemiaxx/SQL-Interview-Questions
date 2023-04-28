@@ -1,3 +1,26 @@
+
+/* Leetcode 176: Find second highest salary, must return null if there's no output */ 
+SELECT
+    isnull(
+        (SELECT
+                 DISTINCT(salary) SecondHighestSalary
+            FROM
+                (
+                    SELECT
+                        salary,
+                        DENSE_RANK() OVER (
+                        ORDER BY
+                            salary DESC
+                        ) ranks
+                    FROM
+                        employee
+                ) a
+            WHERE
+                ranks = 2),
+        NULL
+    ) SecondHighestSalary;
+    
+
 /* Walmart , Best Buy, Dropbox -  Find the employees that earn more than their manager */ 
 SELECT 
     first_name employee_name,
