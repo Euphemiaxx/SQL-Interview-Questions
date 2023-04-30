@@ -1,25 +1,20 @@
-
-/* Leetcode 176: Find second highest salary, must return null if there's no output */ 
+/* Amazon , Shopify - Find the customer with the highest daily total order cost between 2019-02-01 to 2019-05-01. 
+                      If customer had more than one order on a certain day, sum the order costs on daily basis. 
+                      Output customer's first name, total cost of their items, and the date. */
 SELECT
-    isnull(
-        (SELECT
-                 DISTINCT(salary) SecondHighestSalary
-            FROM
-                (
-                    SELECT
-                        salary,
-                        DENSE_RANK() OVER (
-                        ORDER BY
-                            salary DESC
-                        ) ranks
-                    FROM
-                        employee
-                ) a
-            WHERE
-                ranks = 2),
-        NULL
-    ) SecondHighestSalary;
-    
+    top 1 first_name,
+    sum(total_order_cost) total_order_cost,
+    order_date
+FROM
+    customers
+JOIN orders ON
+    orders.cust_id = customers.id
+GROUP BY
+    first_name,
+    order_date
+ORDER BY
+    total_order_cost DESC;
+
 
 /* Walmart , Best Buy, Dropbox -  Find the employees that earn more than their manager */ 
 SELECT 
@@ -134,6 +129,27 @@ GROUP BY
 ORDER BY
     times_top1 DESC,
     trackname;
-    
+
+
+/* Leetcode 176: Find second highest salary, must return null if there's no output */ 
+SELECT
+    isnull(
+        (SELECT
+                 DISTINCT(salary) SecondHighestSalary
+            FROM
+                (
+                    SELECT
+                        salary,
+                        DENSE_RANK() OVER (
+                        ORDER BY
+                            salary DESC
+                        ) ranks
+                    FROM
+                        employee
+                ) a
+            WHERE
+                ranks = 2),
+        NULL
+    ) SecondHighestSalary;
  
     
